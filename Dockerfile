@@ -1,6 +1,7 @@
 FROM python:3.10.8
 
 ENV FLASK_APP=module
+ENV FLAK_DEBUG=$FLAK_DEBUG
 
 COPY requirements.txt /opt
 
