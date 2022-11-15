@@ -5,6 +5,7 @@ from resources.user import blp as UserBlueprint
 from resources.category import blp as CategoryBlueprint
 from resources.note import blp as NoteBlueprint
 
+
 def create_app():
     app = Flask(__name__)
     app.config["PROPAGATE_EXCEPTIONS"] = True

@@ -2,7 +2,7 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 
-from db import NOTES, USERS, CATEGORIES, db
+from db import db
 from models import NoteModel
 from schemas import NoteSchema, NoteQuerySchema
 from sqlalchemy.exc import IntegrityError
