@@ -1,18 +1,20 @@
-from flask import request
 
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 
 from module.db import NOTES, USERS, CATEGORIES
-from module.schemas import NoteSchema
+from module.schemas import NoteSchema, NoteQuerySchema
 
 blp = Blueprint("note", __name__, description="Operations on note")
 
+
 @blp.route("/note")
 class NoteList(MethodView):
-    def get(self):
-        user_id = request.args.get("user_id")
-        category_id = request.args.get("category_id")
+    @blp.arguments(NoteQuerySchema, location="query", as_kwargs=True)
+    @blp.response(200, NoteSchema(many=True))
+    def get(self, **kwargs):
+        user_id = kwargs.get("user_id")
+        category_id = kwargs.get("category_id")
         if user_id and category_id:
             if int(user_id) not in [u["id"] for u in USERS]:
                 abort(400, message="User fot found")
@@ -20,7 +22,10 @@ class NoteList(MethodView):
                 abort(400, message="Category fot found")
             notes = []
             for note in NOTES:
-                if note["category_id"] == int(category_id) and note["user_id"] == int(user_id):
+                if (
+                        note["category_id"] == int(category_id)
+                        and note["user_id"] == int(user_id)
+                ):
                     notes.append(note)
             return notes
         if user_id:
@@ -42,6 +47,7 @@ class NoteList(MethodView):
         return NOTES
 
     @blp.arguments(NoteSchema)
+    @blp.response(200, NoteSchema)
     def post(self, request_data):
         if request_data["id"] in [u["id"] for u in NOTES]:
             abort(400, message="ID is taken")
