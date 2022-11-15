@@ -4,6 +4,7 @@ from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 
 from module.db import NOTES, USERS, CATEGORIES
+from module.schemas import NoteSchema
 
 blp = Blueprint("note", __name__, description="Operations on note")
 
@@ -40,16 +41,8 @@ class NoteList(MethodView):
             return notes
         return NOTES
 
-    def post(self):
-        request_data = request.get_json()
-        if (
-            "id" not in request_data
-            or "user_id" not in request_data
-            or "category_id" not in request_data
-            or "time" not in request_data
-            or "sum" not in request_data
-        ):
-            abort(400, message="Need id, user_id, category_id, time and sum for note")
+    @blp.arguments(NoteSchema)
+    def post(self, request_data):
         if request_data["id"] in [u["id"] for u in NOTES]:
             abort(400, message="ID is taken")
         if request_data["user_id"] not in [u["id"] for u in USERS]:
