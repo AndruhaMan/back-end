@@ -4,7 +4,8 @@ from flask import Flask
 from flask_jwt_extended import JWTManager
 from flask_smorest import Api
 from db import db
-from resources.user import blp as UserBlueprint
+from resources.signup import blp as SignupBlueprint
+from resources.login import blp as LoginBlueprint
 from resources.category import blp as CategoryBlueprint
 from resources.note import blp as NoteBlueprint
 
@@ -30,7 +31,8 @@ def create_app():
     with app.app_context():
         db.create_all()
 
-    api.register_blueprint(UserBlueprint)
+    api.register_blueprint(SignupBlueprint)
+    api.register_blueprint(LoginBlueprint)
     api.register_blueprint(CategoryBlueprint)
     api.register_blueprint(NoteBlueprint)
 
