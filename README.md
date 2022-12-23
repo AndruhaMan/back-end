@@ -21,3 +21,5 @@ Project for back-end course
 Група ІО-05: 5 % 3 = 2
 
 **2 варіант: Користувацькі категорії витрат**
+
+Deploy: https://back-end-j5e1.onrender.com
